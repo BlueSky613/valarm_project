@@ -46,10 +46,9 @@
                                         Current Image
                                     </label>
                                     <div class="flex justify-center">
-                                        <img src="{{ $virtualImage->image_url }}" 
+                                        <img src="http://127.0.0.1:8000/storage/{{ $virtualImage->thumbnail }}" 
                                              alt="{{ $virtualImage->name }}"
-                                             class="max-w-xs rounded-lg shadow-sm"
-                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4='">
+                                             class="max-w-xs rounded-lg shadow-sm">
                                     </div>
                                 </div>
 
@@ -71,19 +70,24 @@
                                     </label>
                                     <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
                                         <div class="space-y-1 text-center">
-                                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                                            <span id="upload-icon">
+                                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                                            </span>
+                                            <div id="video-preview" class="hidden">
+                                                <video id="preview-video" class="mx-auto rounded-lg shadow-sm max-w-xs" controls></video>
+                                            </div>
                                             <div class="flex text-sm text-gray-600">
                                                 <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500">
-                                                    <span>Upload a new file</span>
-                                                    <input id="image" name="image" type="file" accept="image/*" 
+                                                        <span>Upload video</span>
+                                                        <input id="image" name="image" type="file" accept="image/*,video/mp4,video/webm,video/ogg" 
                                                            class="sr-only @error('image') border-red-300 @enderror"
                                                            onchange="previewImage(this)">
                                                 </label>
                                                 <p class="pl-1">or drag and drop</p>
                                             </div>
-                                            <p class="text-xs text-gray-500">
+                                            {{-- <p class="text-xs text-gray-500">
                                                 PNG, JPG, GIF, SVG up to 2MB
-                                            </p>
+                                            </p> --}}
                                         </div>
                                     </div>
                                     @error('image')
@@ -158,17 +162,43 @@
 <script>
 function previewImage(input) {
     if (input.files && input.files[0]) {
+        const file = input.files[0];
         const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            const preview = document.getElementById('image-preview');
-            const previewImg = document.getElementById('preview-img');
-            
-            previewImg.src = e.target.result;
-            preview.classList.remove('hidden');
+        // const imagePreview = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+        const videoPreview = document.getElementById('video-preview');
+        const previewVideo = document.getElementById('preview-video');
+        const uploadIcon = document.getElementById('upload-icon');
+
+        // Hide all previews first
+        // imagePreview.classList.add('hidden');
+        videoPreview.classList.add('hidden');
+        uploadIcon.classList.add('hidden');
+
+        console.log('File type:', file.type);
+
+        if (file.type.startsWith('video/')) {
+            // Show video preview
+
+            console.log('File is a video');
+
+            const url = URL.createObjectURL(file);
+
+            console.log('Video URL:', url);
+
+            previewVideo.src = url;
+            videoPreview.classList.remove('hidden');
+        } else if (file.type.startsWith('image/')) {
+            // Show image preview
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            // Show upload icon if not image/video
+            uploadIcon.classList.remove('hidden');
         }
-        
-        reader.readAsDataURL(input.files[0]);
     }
 }
 </script>

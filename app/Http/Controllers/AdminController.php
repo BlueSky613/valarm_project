@@ -6,6 +6,7 @@ use App\Models\Quote;
 use App\Models\Horoscope;
 use App\Models\VoiceOption;
 use App\Models\VirtualImage;
+use App\Models\WalletUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Log;
@@ -24,6 +25,8 @@ class AdminController
             'active_voice_options' => VoiceOption::active()->count(),
             'virtual_images_count' => VirtualImage::count(),
             'active_virtual_images' => VirtualImage::active()->count(),
+            'wallet_users_count' => WalletUser::count(),
+            'wallet_users_premium_count' => WalletUser::where('premium', true)->count(),
         ];
 
         return view('admin.dashboard', compact('stats'));
@@ -362,5 +365,29 @@ class AdminController
 
         return redirect()->route('admin.virtual-images.index')
             ->with('success', 'Virtual image deleted successfully!');
+    }
+
+    public function walletUsersIndex(Request $request)
+    {
+        $query = WalletUser::query();
+
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('username', 'like', '%' . $s . '%')
+                    ->orWhere('wallet_address', 'like', '%' . $s . '%');
+            });
+        }
+
+        $walletUsers = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        $premiumCount = WalletUser::where('premium', true)->count();
+        $nonPremiumCount = WalletUser::where('premium', false)->count();
+
+        return view('admin.wallet-users.index', compact(
+            'walletUsers',
+            'premiumCount',
+            'nonPremiumCount'
+        ));
     }
 }

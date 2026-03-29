@@ -46,7 +46,7 @@ class LoginController extends Controller
         // If we reach here, credentials are correct
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->intended(route('admin.wallet-users.index'));
         }
 
         return back()->withErrors([

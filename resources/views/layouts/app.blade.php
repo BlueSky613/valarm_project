@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Admin Panel') }} - @yield('title', 'Dashboard')</title>
+    <title>{{ config('app.name', 'Admin Panel') }} - @yield('title', 'App wallet users')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -50,28 +50,10 @@
                                 Dashboard
                             </a>
 
-                            <a href="{{ route('admin.quotes.index') }}"
-                                class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.quotes.*') ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                                <i class="fas fa-quote-left mr-3 flex-shrink-0"></i>
-                                Motivational Quotes
-                            </a>
-
-                            {{-- <a href="{{ route('admin.horoscopes.index') }}"
-                                class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.horoscopes.*') ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                                <i class="fas fa-star mr-3 flex-shrink-0"></i>
-                                Horoscopes
-                            </a> --}}
-
-                            {{-- <a href="{{ route('admin.voice-options.index') }}"
-                                class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.voice-options.*') ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                                <i class="fas fa-microphone mr-3 flex-shrink-0"></i>
-                                Voice Options
-                            </a> --}}
-
-                            <a href="{{ route('admin.virtual-images.index') }}"
-                                class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.virtual-images.*') ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                                <i class="fas fa-image mr-3 flex-shrink-0"></i>
-                                Virtual Images
+                            <a href="{{ route('admin.wallet-users.index') }}"
+                                class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.wallet-users.*') ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <i class="fas fa-wallet mr-3 flex-shrink-0"></i>
+                                App wallet users
                             </a>
 
                             <!-- Logout Button -->
@@ -106,7 +88,7 @@
                             <div class="ml-3 relative">
                                 <div
                                     class="max-w-xs bg-white flex items-center text-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    <span class="ml-5 text-gray-700 font-bold">Welcome to Virtual Alarm!</span>
+                                    <span class="ml-5 text-gray-700 font-bold">Welcome to Solrise!</span>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +99,7 @@
                                     id="user-menu" aria-haspopup="true" :aria-expanded="open">
                                     <span
                                         class="inline-block h-8 w-8 rounded-full text-white flex items-center justify-center">
-                                        @if(auth()->user()->avatar)
+                                        @if(auth()->user()?->avatar)
                                             <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="avatar"
                                                 class="h-7 w-7 rounded-full object-cover">
                                         @else
@@ -127,7 +109,7 @@
                                             </div>
                                         @endif
                                     </span>
-                                    <span class="ml-2 text-gray-700">{{ auth()->user()->name ?? 'User' }}</span>
+                                    <span class="ml-2 text-gray-700">{{ auth()->user()?->name ?? 'User' }}</span>
                                     <svg class="ml-2 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -230,25 +212,10 @@
                                 <i class="fas fa-tachometer-alt mr-4 flex-shrink-0"></i>
                                 Dashboard
                             </a>
-                            <a href="{{ route('admin.quotes.index') }}"
+                            <a href="{{ route('admin.wallet-users.index') }}"
                                 class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                                <i class="fas fa-quote-left mr-4 flex-shrink-0"></i>
-                                Motivational Quotes
-                            </a>
-                            <a href="{{ route('admin.horoscopes.index') }}"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                                <i class="fas fa-star mr-4 flex-shrink-0"></i>
-                                Horoscopes
-                            </a>
-                            <a href="{{ route('admin.voice-options.index') }}"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                                <i class="fas fa-microphone mr-4 flex-shrink-0"></i>
-                                Voice Options
-                            </a>
-                            <a href="{{ route('admin.virtual-images.index') }}"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                                <i class="fas fa-image mr-4 flex-shrink-0"></i>
-                                Virtual Images
+                                <i class="fas fa-wallet mr-4 flex-shrink-0"></i>
+                                App wallet users
                             </a>
                             <!-- Logout Button -->
                             <form method="POST" action="{{ route('logout') }}" class="mt-4">

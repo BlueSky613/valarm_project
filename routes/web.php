@@ -9,7 +9,7 @@ use App\Models\VirtualImage;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.wallet-users.index');
     }
     return redirect()->route('login');
 });
@@ -68,6 +68,10 @@ Route::get('login', function() {
 })->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/wallet-users', [AdminController::class, 'walletUsersIndex'])->name('wallet-users.index');
+});
 
 Route::get('api/v1/config', function () {
     $now = now();
