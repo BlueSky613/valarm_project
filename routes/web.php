@@ -71,6 +71,7 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/wallet-users', [AdminController::class, 'walletUsersIndex'])->name('wallet-users.index');
+    Route::delete('/wallet-users/{walletUser}', [AdminController::class, 'walletUsersDestroy'])->name('wallet-users.destroy');
 });
 
 Route::get('api/v1/config', function () {

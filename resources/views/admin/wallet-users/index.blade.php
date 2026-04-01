@@ -81,6 +81,10 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Registered
                                 </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -111,10 +115,22 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $row->created_at->format('Y-m-d H:i') }}
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <form action="{{ route('admin.wallet-users.destroy', $row) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="inline-flex items-center px-3 py-1.5 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
+                                                <i class="fas fa-trash -ml-0.5 mr-1.5 h-4 w-4"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500">
+                                    <td colspan="8" class="px-6 py-8 text-center text-sm text-gray-500">
                                         No wallet registrations yet.
                                     </td>
                                 </tr>

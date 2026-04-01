@@ -390,4 +390,12 @@ class AdminController
             'nonPremiumCount'
         ));
     }
+
+    public function walletUsersDestroy(WalletUser $walletUser)
+    {
+        $walletUser->delete();
+
+        return redirect()->route('admin.wallet-users.index')
+            ->with('success', 'User deleted successfully!');
+    }
 }
